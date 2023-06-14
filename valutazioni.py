@@ -32,8 +32,10 @@ def visualizza_registro(registro, pesantezze):
     registro_text.delete("1.0", tk.END)
     registro_text.insert(tk.END, "Registro delle valutazioni:\n\n")
     for materia, voti in registro.items():
-        media = calcola_media(voti, pesantezze.get(materia, 100))  # Utilizza pesantezza di default 100 se la materia non è presente
-        registro_text.insert(tk.END, f"{materia}:\nVoti: {voti} - Media: {media:.2f}\n")
+        voto_str = ', '.join([str(voto) for voto, _ in voti])
+        media = calcola_media(voti, pesantezze.get(materia, 100))
+        registro_text.insert(tk.END, f"{materia}:\nVoti: {voto_str}\nMedia: {media:.2f}\n\n")
+
 
 def inserisci_valutazione(event=None):
     materia = materia_var.get().lower()
@@ -77,7 +79,7 @@ registro = carica_registro()
 
 root = tk.Tk()
 root.title("Programma di Valutazione")
-root.geometry("500x400")
+root.geometry("800x900")
 root.resizable(False, False)
 
 materia_label = tk.Label(root, text="Materia:")
@@ -108,8 +110,9 @@ voto_entry.bind("<Return>", inserisci_valutazione)  # Collegamento dell'azione a
 inserisci_button = tk.Button(root, text="Inserisci Valutazione", command=inserisci_valutazione)
 inserisci_button.pack()
 
-registro_text = tk.Text(root, height=15, width=60)
+registro_text = tk.Text(root, height=47, width=80)
 registro_text.pack()
+
 
 visualizza_registro(registro, pesantezze)
 
